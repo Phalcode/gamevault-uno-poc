@@ -37,7 +37,7 @@ namespace GameVaultUnoPoc.Pages
                     SettingsViewModel.Instance.ServerUrl = result[2];
                     string userResult = await WebHelper.GetRequest(SettingsViewModel.Instance.ServerUrl + "api/users/me");
                     SettingsViewModel.Instance.User = JsonSerializer.Deserialize<User>(userResult);
-                    uiImgUser.Source = await WebHelper.DownloadImageFromUrlAsync($"{SettingsViewModel.Instance.ServerUrl}api/v1/images/{SettingsViewModel.Instance.User.ProfilePicture.ID}");
+                    uiImgUser.Source = await WebHelper.DownloadImageFromUrlAsync($"{SettingsViewModel.Instance.ServerUrl}api/images/{SettingsViewModel.Instance.User.ProfilePicture.ID}");
                 }
             }
             else
@@ -77,9 +77,10 @@ string[] result = File.ReadAllText(cookieValue).Split(";");
                 }
                 else
                 {
+                    Console.WriteLine("#################ISNOTWINDOWS");
 #if __WASM__
-
-var cookie = new Uno.Web.Http.Cookie("Auth", "$"{SettingsViewModel.Instance.Username};{SettingsViewModel.Instance.Password};{SettingsViewModel.Instance.ServerUrl}"");
+                 Console.WriteLine("#################ISWASM");  
+var cookie = new Uno.Web.Http.Cookie("Auth", $"{SettingsViewModel.Instance.Username};{SettingsViewModel.Instance.Password};{SettingsViewModel.Instance.ServerUrl}");
 var request = new Uno.Web.Http.SetCookieRequest(cookie)
 {
 	Path = "/",
@@ -90,6 +91,7 @@ var request = new Uno.Web.Http.SetCookieRequest(cookie)
 Uno.Web.Http.CookieManager.GetDefault().SetCookie(request);
 
 #endif
+
                 }
             }
             string result = await WebHelper.GetRequest(SettingsViewModel.Instance.ServerUrl + "api/users/me");
@@ -109,11 +111,11 @@ Uno.Web.Http.CookieManager.GetDefault().SetCookie(request);
             }
             else
             {
-//#if __WASM__
+#if __WASM__
 
-//CookieManager.GetDefault().DeleteCookie("Auth", path: "/");
+                CookieManager.GetDefault().DeleteCookie("Auth", path: "/");
 
-//#endif
+#endif
             }
         }
     }
