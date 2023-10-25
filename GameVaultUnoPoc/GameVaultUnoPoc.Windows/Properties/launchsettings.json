@@ -1,0 +1,10 @@
+{
+  "profiles": {
+	"GameVaultUnoPoc.Windows (Package)": {
+	  "commandName": "MsixPackage"
+	},
+	"GameVaultUnoPoc.Windows (Unpackaged)": {
+	  "commandName": "Project"
+	}
+  }
+}
